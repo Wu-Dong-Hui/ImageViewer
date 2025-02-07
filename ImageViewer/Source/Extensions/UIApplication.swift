@@ -11,7 +11,12 @@ import UIKit
 extension UIApplication {
 
     static var applicationWindow: UIWindow {
-        return UIApplication.shared.keyWindow!
+        if #available(iOS 13.0, *) {
+            let scene = UIApplication.shared.connectedScenes.first as! UIWindowScene
+            return scene.windows.first!
+        } else {
+            return UIApplication.shared.keyWindow!
+        }
     }
 
     static var isPortraitOnly: Bool {
