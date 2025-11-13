@@ -156,15 +156,6 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
 
         pagingDataSource.itemControllerDelegate = self
 
-        ///This feels out of place, one would expect even the first presented(paged) item controller to be provided by the paging dataSource but there is nothing we can do as Apple requires the first controller to be set via this "setViewControllers" method.
-        let initialController = pagingDataSource.createItemController(startIndex, isInitial: true)
-        self.setViewControllers([initialController], direction: UIPageViewController.NavigationDirection.forward, animated: false, completion: nil)
-
-        if let controller = initialController as? ItemController {
-
-            initialItemController = controller
-        }
-
         ///This less known/used presentation style option allows the contents of parent view controller presenting the gallery to "bleed through" the blurView. Otherwise we would see only black color.
         self.modalPresentationStyle = .overFullScreen
         self.dataSource = pagingDataSource
@@ -255,6 +246,15 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
             }
         }
 
+        ///This feels out of place, one would expect even the first presented(paged) item controller to be provided by the paging dataSource but there is nothing we can do as Apple requires the first controller to be set via this "setViewControllers" method.
+        let initialController = pagingDataSource.createItemController(currentIndex, isInitial: true)
+        self.setViewControllers([initialController], direction: UIPageViewController.NavigationDirection.forward, animated: false, completion: nil)
+
+        if let controller = initialController as? ItemController {
+
+            initialItemController = controller
+        }
+        
         configureHeaderView()
         configureFooterView()
         configureCloseButton()
